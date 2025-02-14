@@ -18,7 +18,6 @@ app.get("/", (req, res) => {
     endpoints: {
       referrals: "/api/referrals",
       health: "/health",
-      docs: "/api-docs" // if you plan to add API documentation
     },
     status: "active",
     timestamp: new Date().toISOString()
@@ -46,32 +45,7 @@ app.use((req, res) => {
   });
 });
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({
-    error: "Internal Server Error",
-    message: process.env.NODE_ENV === 'production' 
-      ? "Something went wrong" 
-      : err.message
-  });
-});
-
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📚 API Documentation: http://localhost:${PORT}/api-docs`);
-  console.log(`🔥 Environment: ${process.env.NODE_ENV || 'development'}`);
-});
-
-// Handle uncaught exceptions
-process.on('uncaughtException', (err) => {
-  console.error('Uncaught Exception:', err);
-  process.exit(1);
-});
-
-// Handle unhandled promise rejections
-process.on('unhandledRejection', (err) => {
-  console.error('Unhandled Rejection:', err);
-  process.exit(1);
 });
